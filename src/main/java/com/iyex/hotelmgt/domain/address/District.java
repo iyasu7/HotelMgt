@@ -1,7 +1,10 @@
 package com.iyex.hotelmgt.domain.address;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -22,6 +25,6 @@ public class District {
     private List<Address> address;
 
     @ManyToOne
-    @JoinColumn(name = "district")
+    @JoinColumn(name = "sub_city_id")
     private SubCity subCity;
 }

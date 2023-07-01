@@ -15,6 +15,7 @@ public class RoomType {
     private Long id;
 
     private int numberOfRooms;
+    private int numberOfAvailableRooms;
     private int numberOfBeds;
     private Boolean doesContainPrivateBathroom;
     private Boolean hasTV;

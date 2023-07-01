@@ -6,16 +6,19 @@ import lombok.Setter;
 
 import java.util.Set;
 
+@Entity
 @Getter
 @Setter
-@Entity
-public class ServiceType {
+public class HotelType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String ServiceTypeName;
+    private String name;
 
-    @OneToMany(mappedBy = "serviceType")
-    private Set<Service> services;
+    private String description;
+
+    @OneToMany(mappedBy = "type")
+    private Set<Hotel> hotels;
+
 }

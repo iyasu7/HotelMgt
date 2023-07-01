@@ -7,6 +7,7 @@ import org.hibernate.Hibernate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -18,6 +19,8 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private UUID bookingNumber;
 //    user,
 
     @ManyToOne(fetch = FetchType.LAZY)

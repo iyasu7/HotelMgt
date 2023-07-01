@@ -1,4 +1,4 @@
-package com.iyex.hotelmgt.utils;
+package com.iyex.hotelmgt.domain.key;
 
 import jakarta.persistence.Embeddable;
 import lombok.Data;

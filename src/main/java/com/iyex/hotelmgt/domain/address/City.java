@@ -2,7 +2,6 @@ package com.iyex.hotelmgt.domain.address;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -11,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +22,7 @@ public class City {
     private List<SubCity> subCities;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "country_id")
-    private Country country;
+    @JoinColumn(name = "region_id")
+    private Region region;
 
 }

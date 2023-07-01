@@ -1,6 +1,6 @@
 package com.iyex.hotelmgt.domain;
 
-import com.iyex.hotelmgt.utils.HotelRatingKey;
+import com.iyex.hotelmgt.domain.key.HotelRatingKey;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
