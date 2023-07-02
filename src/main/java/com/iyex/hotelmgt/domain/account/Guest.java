@@ -1,6 +1,8 @@
-package com.iyex.hotelmgt.domain;
+package com.iyex.hotelmgt.domain.account;
 
 
+import com.iyex.hotelmgt.domain.Booking;
+import com.iyex.hotelmgt.domain.Rating;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,7 +29,7 @@ public class Guest {
 
     @OneToMany(mappedBy = "guest")
     @ToString.Exclude
-    private Set<HotelRating> ratings;
+    private Set<Rating> ratings;
 
 
 }

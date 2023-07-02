@@ -1,6 +1,7 @@
-package com.iyex.hotelmgt.domain;
+package com.iyex.hotelmgt.domain.account;
 
 
+import com.iyex.hotelmgt.domain.Hotel;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;

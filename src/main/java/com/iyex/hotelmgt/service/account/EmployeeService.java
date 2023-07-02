@@ -1,7 +1,7 @@
-package com.iyex.hotelmgt.service;
+package com.iyex.hotelmgt.service.account;
 
-import com.iyex.hotelmgt.domain.Employee;
-import com.iyex.hotelmgt.repository.EmployeeRepo;
+import com.iyex.hotelmgt.domain.account.Employee;
+import com.iyex.hotelmgt.repository.account.EmployeeRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +27,11 @@ public class EmployeeService {
 //    public Employee updateEmployee(Long id, Employee employee){
 //        return employeeRepo.save(employee);
 //    }
+
+
+    public Employee getEmployeeByUsername(String username) {
+        return employeeRepo.findEmployeeByUsername(username);
+    }
 
     public String deleteEmployee(Long id){
          employeeRepo.deleteById(id);

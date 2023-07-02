@@ -24,6 +24,8 @@ public class HotelService {
     public Hotel saveHotel(Hotel hotel){
         return hotelRepo.save(hotel);
     }
+    //update hotel
+
     public String deleteHotel(Long id){
         hotelRepo.deleteById(id);
         return "Hotel with id " + id + " was deleted";

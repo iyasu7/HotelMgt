@@ -1,7 +1,7 @@
-package com.iyex.hotelmgt.resource;
+package com.iyex.hotelmgt.resource.account;
 
-import com.iyex.hotelmgt.domain.Guest;
-import com.iyex.hotelmgt.service.GuestService;
+import com.iyex.hotelmgt.domain.account.Guest;
+import com.iyex.hotelmgt.service.account.GuestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;

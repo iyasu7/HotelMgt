@@ -1,7 +1,7 @@
-package com.iyex.hotelmgt.service;
+package com.iyex.hotelmgt.service.account;
 
-import com.iyex.hotelmgt.domain.Guest;
-import com.iyex.hotelmgt.repository.GuestRepo;
+import com.iyex.hotelmgt.domain.account.Guest;
+import com.iyex.hotelmgt.repository.account.GuestRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -47,6 +47,11 @@ public class GuestService {
 //        }
 //        return null;
 //    }
+
+    public Guest getGuestByUsername(String username){
+        return guestRepo.findGuestByUsername(username);
+    }
+
     public String deleteGuest(Long id){
         guestRepo.deleteById(id);
         return "Guest with id " + id + " was deleted";
