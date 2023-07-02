@@ -1,7 +1,6 @@
 package com.iyex.hotelmgt.service.address;
 
 import com.iyex.hotelmgt.domain.address.Region;
-import com.iyex.hotelmgt.repository.address.CountryRepo;
 import com.iyex.hotelmgt.repository.address.RegionRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,18 +13,32 @@ import java.util.NoSuchElementException;
 public class RegionService {
 
     public final RegionRepo regionRepo;
-    public final CountryRepo countryRepo;
 
-    public Region getRegion(Long id){
+    public Region getRegionById(Long id){
         return regionRepo.findById(id)
                 .orElseThrow(()-> new NoSuchElementException("Region with id " + id + " not found!!"));
     }
-    public List<Region> getAllRegion(){
-        return (List<Region>) regionRepo.findAll();
+    public Region getRegionByRegionName(String regionName){
+
+        Region region = regionRepo.findByRegionName(regionName);
+
+//        if (region == null) {
+//            return ResponseEntity.notFound().build(); // Return 404 Not Found status
+//        } else {
+//            return ResponseEntity.ok(region); // Return 200 OK status with the region object
+//        }
+        if (region == null) {
+            throw new RuntimeException("Region with name " + regionName + " was not found!!");
+        }
+        return region;
     }
-    public Region saveRegion(Region region){
+    public List<Region> getAllRegion(){
+        return regionRepo.findAll();
+    }
+    public Region saveRegion(Region region) {
         return regionRepo.save(region);
     }
+
     // updateRegion
     public String deleteRegion(Long id){
         regionRepo.deleteById(id);

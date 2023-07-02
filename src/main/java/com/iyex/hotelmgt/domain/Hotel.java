@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +32,7 @@ public class Hotel {
     @JoinColumn(name = "hotel_type")
     private HotelType type;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
 
@@ -43,9 +42,11 @@ public class Hotel {
     @OneToMany(mappedBy = "hotel")
     private Set<Employee> employees;
 
+    //ManyToMany b/n Hotel and Services
     @OneToMany(mappedBy = "hotel")
     private Set<HotelService> hotelServices;
 
+    //ManyToMany b/n Hotel and Rating(HotelRating)
     @OneToMany(mappedBy = "hotel")
     private Set<HotelRating> ratings;
 

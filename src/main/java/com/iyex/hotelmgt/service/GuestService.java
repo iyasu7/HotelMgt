@@ -36,6 +36,17 @@ public class GuestService {
 //        Guest guest = guestRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Guest with id " + id +"  not found"));
 //        return guestRepo.save(guest);
 //    }
+// Update
+//    public Guest updateGuest(Long id, Guest updatedGuest) {
+//        Guest city = cityRepository.findById(id).orElse(null);
+//        if (city != null) {
+//            city.setGuestName(updatedGuest.getGuestName());
+//            city.setRegion(updatedGuest.getRegion());
+//            // Add any other fields you want to update
+//            return cityRepository.save(city);
+//        }
+//        return null;
+//    }
     public String deleteGuest(Long id){
         guestRepo.deleteById(id);
         return "Guest with id " + id + " was deleted";

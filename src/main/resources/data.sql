@@ -67,14 +67,14 @@ VALUES
   ('Nevsky Prospekt', 11);
 
 -- Insert sample data into Address table
-INSERT INTO address (street, district_id, sub_city_id, city_id, country_id, description)
+INSERT INTO address (street, district_id)
 VALUES
-  ('123 Main St', 1, 1, 1, 1, 'Residential Address'),
-  ('456 Elm St', 2, 1, 1, 1, 'Commercial Address'),
-  ('789 Oak St', 3, 2, 2, 1, 'Business Address'),
-  ('321 Pine St', 4, 2, 2, 1, 'Office Address'),
-  ('555 Broadway', 5, 3, 3, 1, 'Apartment Address'),
-  ('10 Downing Street', 6, 4, 4, 2, 'Prime Minister Residence'),
-  ('1 The Calls', 7, 5, 5, 2, 'City Center Office'),
-  ('20 Rue de Rivoli', 8, 6, 6, 3, 'Tourist Attraction'),
-  ('25 Quai des Grands Augustins', 9, 7, 6, 3, 'Art Gallery');
+  ('123 Main St', 1),
+  ('456 Elm St', 2),
+  ('789 Oak St', 3),
+  ('321 Pine St', 4),
+  ('555 Broadway', 5),
+  ('10 Downing Street', 6),
+  ('1 The Calls', 7),
+  ('20 Rue de Rivoli', 8),
+  ('25 Quai des Grands Augustins', 9);

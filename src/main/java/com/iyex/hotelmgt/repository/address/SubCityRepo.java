@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SubCityRepo extends JpaRepository<SubCity, Long> {
+    SubCity findSubCityBySubCityName(String subCityName);
 }

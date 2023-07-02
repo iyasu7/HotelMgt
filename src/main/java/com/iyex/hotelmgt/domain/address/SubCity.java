@@ -16,6 +16,7 @@ public class SubCity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String subCityName;
+
     @OneToMany(mappedBy = "subCity")
     @ToString.Exclude
     private Set<District> districts;

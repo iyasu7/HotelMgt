@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Set;
-
 @Entity
 @Getter
 @Setter
@@ -26,21 +24,8 @@ public class Address {
     @JoinColumn(name = "district_id")
     private District district;
 
-    @ManyToOne
-    @JoinColumn(name = "subCity_id")
-    private SubCity subCity;
-
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
-
-    @ManyToOne
-    @JoinColumn(name = "country_id")
-    private Country country;
-
-    private String description;
-
-    @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "address")
     @ToString.Exclude
-    private Set<Hotel> hotel;
+    private Hotel hotel;
+
 }

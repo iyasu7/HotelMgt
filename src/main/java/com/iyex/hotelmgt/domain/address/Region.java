@@ -14,9 +14,11 @@ public class Region {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String regionName;
+
     @ManyToOne
     @JoinColumn
     private Country country;
+
     @OneToMany(mappedBy = "region")
     private Set<City> cities;
 }
