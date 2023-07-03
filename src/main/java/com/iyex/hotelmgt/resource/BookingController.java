@@ -6,10 +6,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/rooms")
+@RequestMapping("/bookings")
 public class BookingController {
 
     private final BookingService bookingService;
@@ -18,6 +19,12 @@ public class BookingController {
     public Booking getBooking(@PathVariable Long id){
         return bookingService.getBooking(id);
     }
+
+    @GetMapping("{bookingNumber}")
+    public Booking getBookingByBookingNumber(@PathVariable String bookingNumber){
+        return bookingService.getBookingByBookingNumber(UUID.fromString(bookingNumber));
+    }
+
     @GetMapping()
     public List<Booking> getAllBooking(){
         return bookingService.getAllBookings();

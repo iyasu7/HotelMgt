@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,11 @@ public class BookingService {
         return bookingRepo.findById(id)
                 .orElseThrow(()-> new NoSuchElementException("Booking with id " + id + " not found"));
     }
+
+    public Booking getBookingByBookingNumber(UUID bookingNumber) {
+        return bookingRepo.findBookingByBookingNumber(bookingNumber);
+    }
+
     public List<Booking> getAllBookings(){
         return bookingRepo.findAll();
     }

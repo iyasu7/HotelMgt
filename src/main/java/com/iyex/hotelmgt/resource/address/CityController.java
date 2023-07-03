@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/regions")
+@RequestMapping("/cities")
 public class CityController {
     private final CityService cityService;
     private final RegionService regionService;
