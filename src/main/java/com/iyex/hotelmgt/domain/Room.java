@@ -3,6 +3,8 @@ package com.iyex.hotelmgt.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Entity
 @Getter
@@ -17,7 +19,6 @@ public class Room {
     private String roomNumber;
     private int floorNumber;
     private double size;
-    private boolean available;
     private Double price;
 
     @ManyToOne
@@ -26,6 +27,10 @@ public class Room {
 
     @OneToOne(mappedBy = "room")
     private Booking booking;
+
+    @OneToMany(mappedBy = "room")
+    @ToString.Exclude
+    private List<RoomUnavailability> unavailabilities;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id")

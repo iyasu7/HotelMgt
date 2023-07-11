@@ -1,6 +1,6 @@
 package com.iyex.hotelmgt.domain;
 
-import com.iyex.hotelmgt.domain.account.Guest;
+import com.iyex.hotelmgt.domain.account.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class Rating {
 
     @ManyToOne
     @JoinColumn(name = "guest_id",nullable = false)
-    private Guest guest;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id",nullable = false)

@@ -1,3 +1,24 @@
+
+-- Create the role
+INSERT INTO role (role_name) VALUES ('guest');
+
+-- Assign permissions to the role
+INSERT INTO role_permission (role_id, permission) VALUES
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'BOOKING_CREATE'),
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'BOOKING_READ'),
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'BOOKING_UPDATE'),
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'BOOKING_DELETE'),
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'HOTEL_READ'),
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'RATING_CREATE'),
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'RATING_READ'),
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'RATING_UPDATE'),
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'RATING_DELETE'),
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'REVIEW_CREATE'),
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'REVIEW_READ'),
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'REVIEW_UPDATE'),
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'REVIEW_DELETE'),
+  ((SELECT id FROM role WHERE role_name = 'guest'), 'SERVICE_READ');
+
 -- Insert sample data into Country table
 INSERT INTO country (country_name)
 VALUES ('USA'), ('UK'), ('France'), ('Canada'), ('Russia');

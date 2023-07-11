@@ -2,10 +2,13 @@ package com.iyex.hotelmgt.resource;
 
 import com.iyex.hotelmgt.domain.Hotel;
 import com.iyex.hotelmgt.domain.Review;
+import com.iyex.hotelmgt.domain.account.User;
 import com.iyex.hotelmgt.service.HotelService;
 import com.iyex.hotelmgt.service.ReviewService;
-import com.iyex.hotelmgt.service.account.GuestService;
+import com.iyex.hotelmgt.service.account.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.actuate.endpoint.SecurityContext;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,15 +19,16 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
     private final HotelService hotelService;
-    private final GuestService guestService;
+    private final UserService userService;
 
     @GetMapping("{hotelId}")
     public List<Review> getHotelReviews(@PathVariable Long hotelId){
         return reviewService.getReviewsByHotelId(hotelId);
     }
     @PostMapping("{hotelId}")
-    public Review makeHotelReview(@PathVariable Long hotelId,@RequestBody Review review){
-        Review newReview = reviewService.saveReview(review);
+    public Review makeHotelReview(@PathVariable Long hotelId,@RequestBody Review review,@CurrentSecurityContext SecurityContext context){
+        User user = (User) context.getPrincipal();
+        Review newReview = reviewService.saveReview(review,user);
         Hotel hotel = hotelService.getHotel(hotelId);
         newReview.setHotel(hotel);
         return newReview;
@@ -32,7 +36,7 @@ public class ReviewController {
     @PutMapping("{reviewId}")
     public Review updateReview(@PathVariable Long reviewId,@RequestBody Review updateReview){
         Review review = reviewService.getReviewById(reviewId);
-        review.setReview(updateReview.getReview());
+        review.setComment(updateReview.getComment());
         return review;
     }
 //    @PostMapping("/{reviewId}/like")

@@ -1,6 +1,6 @@
 package com.iyex.hotelmgt.domain;
 
-import com.iyex.hotelmgt.domain.account.Guest;
+import com.iyex.hotelmgt.domain.account.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,24 +17,28 @@ public class Review {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String review;
+    private String comment;
 
     @ManyToMany
     @JoinTable(
             name = "review_likes",
             joinColumns = @JoinColumn(name = "review_id"),
-            inverseJoinColumns = @JoinColumn(name = "guest_id")
+            inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<Guest> likes = new HashSet<>();
+    private Set<User> likes = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
-    public void like(Guest guest){
-        likes.add(guest);
+    public void like(User user){
+        likes.add(user);
     }
-    public void dislike(Guest guest){
-        likes.remove(guest);
+    public void dislike(User user){
+        likes.remove(user);
     }
 
 

@@ -1,6 +1,6 @@
 package com.iyex.hotelmgt.domain;
 
-import com.iyex.hotelmgt.domain.account.Guest;
+import com.iyex.hotelmgt.domain.account.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -25,9 +25,9 @@ public class Booking {
 //    user,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "guest_id")
+    @JoinColumn(name = "user_id")
     @ToString.Exclude
-    private Guest guest;
+    private User user;
 
     @OneToMany(mappedBy = "booking")
     @ToString.Exclude
@@ -41,9 +41,26 @@ public class Booking {
 //    @ManyToOne
 //    private Hotel hotel;
 
-    private LocalDateTime bookingDates;
-//    paymentDetails;
+    private LocalDateTime bookingDate;
+    private LocalDateTime checkInDate;
+    private LocalDateTime checkOutDate;
 
+//    paymentDetails;
+    // Update room availability when check-out is performed
+//    public void performCheckOut(Room room) {
+//        if (room != null) {
+//            room.setUnavailabilities(true);
+//        }
+//    }
+//
+//    // Update room availability when check-in or check-out dates are modified
+//    public void updateRoomAvailability(Room room) {
+//        if (room != null) {
+//            LocalDateTime currentDate = LocalDateTime.now();
+//            boolean isWithinBookingPeriod = currentDate.isAfter(this.checkInDate) && currentDate.isBefore(this.checkOutDate);
+//            room.setAvailable(!isWithinBookingPeriod);
+//        }
+//    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

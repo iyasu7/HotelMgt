@@ -1,6 +1,6 @@
 package com.iyex.hotelmgt.domain;
 
-import com.iyex.hotelmgt.domain.account.Employee;
+import com.iyex.hotelmgt.domain.account.User;
 import com.iyex.hotelmgt.domain.address.Address;
 import com.iyex.hotelmgt.enums.Star;
 import jakarta.persistence.*;
@@ -41,7 +41,7 @@ public class Hotel {
     private List<Room> rooms;
 
     @OneToMany(mappedBy = "hotel")
-    private Set<Employee> employees;
+    private Set<User> employees;
 
     //ManyToMany b/n Hotel and Services
     @OneToMany(mappedBy = "hotel")
