@@ -24,7 +24,7 @@ The Hotel Portal Application is a web-based system developed using Spring Boot f
 
 ### Prerequisites
 
-- Java Development Kit (JDK) 8 or later
+- Java Development Kit (JDK) 17 or later
 - Maven
 - MySQL or any other preferred database server
 
@@ -39,7 +39,7 @@ https://github.com/iyasu7/HotelMgt.git
 2. Configure the database connection in the `application.properties` file:
 
 ```
-spring.datasource.url=jdbc:mysql://localhost:3306/hotelmgt
+spring.datasource.url=jdbc:mysql://localhost:3306/hotel_mgt
 spring.datasource.username=root
 spring.datasource.password=your-password
 ```
@@ -70,7 +70,7 @@ Contributions to the Hotel Portal Application are welcome. If you encounter any 
 
 ## Authors
 
-<td align="center"><a href="https://github.com/iyasu7" target="_black"><img src="https://avatars1.githubusercontent.com/u/40190772?s=460&v=4" width="150px;" alt="abdallah hemdan"/><br /><sub><b> Iyasu Nibret</b></sub></a><a href="https://github.com/iyasu7/HotelMgt/commits/master?author=iyasu7" title="Code">💻</a> <br /></td>
+<td align="center"><a href="https://github.com/iyasu7" target="_black"><img src="https://avatars.githubusercontent.com/u/107022433?s=400&u=48c31a65a7f69723cc3fa0c341884a300f2349ae&v=4" width="150px;" alt="abdallah hemdan"/><br /><sub align="center" ><b> Iyasu Nibret</b></sub></a><a href="https://github.com/iyasu7/HotelMgt/commits/master?author=iyasu7" title="Code">💻</a> <br /></td>
 
 
 ## Acknowledgements
