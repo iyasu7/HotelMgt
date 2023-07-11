@@ -1,15 +1,18 @@
 # Hotel Portal Application
 
-The Hotel Portal Application is a web-based system developed using Spring Boot framework. It provides functionalities for managing hotels, bookings, ratings, and reviews.
+The Hotel Portal Application is a web-based platform that allows guests to browse and explore various hotels to find their preferred accommodations. Built using Spring Boot framework, this application provides an intuitive and user-friendly API for guests to search and view detailed information about hotels.
 
 ## Features
 
-- User Registration and Authentication: Users can create an account and authenticate themselves to access the application.
-- Hotel Management: Hotel owners or administrators can add, update, and delete hotels along with their details such as name, description, star rating, and address.
-- Booking Management: Users can search for available hotels, make bookings, and view their booking history.
-- Rating and Review System: Users can rate hotels and provide reviews based on their experiences.
-- Role-based Access Control: The application implements role-based access control to restrict certain functionalities based on user roles (e.g., guest, employee, administrator).
-- RESTful APIs: The application exposes RESTful APIs to allow integration with other systems or third-party applications.
+Hotel Search: Guests can search for hotels based on different criteria such as location, star rating, amenities, etc.
+Hotel Listings: The application displays a list of hotels with essential details like name, address, star rating, and a brief description.
+Hotel Details: Guests can click on a specific hotel to view more detailed information, including room types, prices, available services, and customer reviews.
+User Registration: Guests can create an account to access additional features like booking a room, submitting reviews, and managing their preferences.
+Booking: Registered users can book a room in their preferred hotel, select check-in and check-out dates, and make payment securely.
+Reviews and Ratings: Users can read and submit reviews for hotels they have visited, providing valuable feedback to other guests.
+User Profile: Registered users have a personalized profile where they can manage their bookings, view past stays, update preferences, and track their activities.
+Role-based Access Control: The application implements role-based access control to restrict certain functionalities based on user roles (e.g., guest, employee, administrator).
+RESTful APIs: The application exposes RESTful APIs to allow integration with other systems or third-party applications.
 
 ## Technologies Used
 
