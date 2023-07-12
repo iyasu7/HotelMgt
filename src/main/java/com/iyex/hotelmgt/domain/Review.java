@@ -17,7 +17,7 @@ public class Review {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String comment;
+    private String hotelReview;
 
     @ManyToMany
     @JoinTable(
@@ -28,7 +28,7 @@ public class Review {
     private Set<User> likes = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "guest_id")
     private User user;
 
     @ManyToOne

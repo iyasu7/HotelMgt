@@ -28,7 +28,7 @@ public class ReviewService {
     //Update
     public Review updateReview(Long id, Review updateReview){
         Review review = reviewRepo.findById(id).orElseThrow(()->new NoSuchElementException("Review with id " + id + " not found"));
-        review.setComment(updateReview.getComment());
+        review.setHotelReview(updateReview.getHotelReview());
         // If user changes a review,the likes button are removed
         review.setLikes(new HashSet<>());
         return review;

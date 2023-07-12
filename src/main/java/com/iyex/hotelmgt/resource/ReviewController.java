@@ -36,7 +36,7 @@ public class ReviewController {
     @PutMapping("{reviewId}")
     public Review updateReview(@PathVariable Long reviewId,@RequestBody Review updateReview){
         Review review = reviewService.getReviewById(reviewId);
-        review.setComment(updateReview.getComment());
+        review.setHotelReview(updateReview.getHotelReview());
         return review;
     }
 //    @PostMapping("/{reviewId}/like")

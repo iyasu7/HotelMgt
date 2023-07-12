@@ -18,8 +18,8 @@ public class Room {
 
     private String roomNumber;
     private int floorNumber;
-    private double size;
-    private Double price;
+    private double roomSize;
+    private double price;
 
     @ManyToOne
     @JoinColumn(name = "room_type_id")

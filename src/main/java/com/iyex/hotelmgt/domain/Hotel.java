@@ -1,8 +1,7 @@
 package com.iyex.hotelmgt.domain;
 
 import com.iyex.hotelmgt.domain.account.User;
-import com.iyex.hotelmgt.domain.address.Address;
-import com.iyex.hotelmgt.enums.Star;
+import com.iyex.hotelmgt.domain.address.District;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,16 +25,17 @@ public class Hotel {
     private String hotelName;
 
     private String description;
-    private Star star;
+
+    private int star;
     private int bookingExpirationTimeInHours;
 
     @ManyToOne
     @JoinColumn(name = "hotel_type")
     private HotelType type;
 
-    @OneToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @ManyToOne
+    @JoinColumn(name = "district_id")
+    private District district;
 
     @OneToMany(mappedBy = "hotel")
     private List<Room> rooms;

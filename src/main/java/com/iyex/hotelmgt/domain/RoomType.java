@@ -21,6 +21,8 @@ public class RoomType {
     private Boolean hasTV;
     private Boolean hasBalcony;
     private Boolean hasRoomService;
+    private String roomTypeName;
+    private String description;
 
     @OneToMany(mappedBy = "roomType")
     private List<Room> rooms;

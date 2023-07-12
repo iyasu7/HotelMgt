@@ -1,6 +1,5 @@
 package com.iyex.hotelmgt.domain.address;
 
-import com.iyex.hotelmgt.domain.Hotel;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +23,6 @@ public class Address {
     @JoinColumn(name = "district_id")
     private District district;
 
-    @OneToOne(mappedBy = "address")
-    @ToString.Exclude
-    private Hotel hotel;
+
 
 }
