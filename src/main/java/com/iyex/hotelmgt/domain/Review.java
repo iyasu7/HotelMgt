@@ -1,5 +1,6 @@
 package com.iyex.hotelmgt.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.iyex.hotelmgt.domain.account.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,14 +26,17 @@ public class Review {
             joinColumns = @JoinColumn(name = "review_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+
     private Set<User> likes = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "guest_id")
+    @JsonBackReference
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
+    @JsonBackReference
     private Hotel hotel;
     public void like(User user){
         likes.add(user);

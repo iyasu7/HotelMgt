@@ -1,5 +1,6 @@
 package com.iyex.hotelmgt.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.iyex.hotelmgt.domain.account.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,10 +21,12 @@ public class Rating {
 
     @ManyToOne
     @JoinColumn(name = "guest_id",nullable = false)
+    @JsonBackReference
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id",nullable = false)
+    @JsonBackReference
     private Hotel hotel;
 
     @Column(nullable = false)

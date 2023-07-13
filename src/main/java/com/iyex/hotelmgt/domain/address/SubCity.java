@@ -1,5 +1,7 @@
 package com.iyex.hotelmgt.domain.address;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,9 +21,11 @@ public class SubCity {
 
     @OneToMany(mappedBy = "subCity")
     @ToString.Exclude
+    @JsonManagedReference
     private Set<District> districts;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
+    @JsonBackReference
     private City city;
 }

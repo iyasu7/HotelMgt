@@ -1,5 +1,6 @@
 package com.iyex.hotelmgt.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.iyex.hotelmgt.domain.key.HotelServiceKey;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,13 +17,17 @@ import java.util.Objects;
 public class HotelService {
     @EmbeddedId
     private HotelServiceKey id;
+
     @ManyToOne
     @MapsId("hotelId")
     @JoinColumn(name = "hotel_id")
+    @JsonBackReference
     private Hotel hotel;
+
     @ManyToOne
     @MapsId("serviceId")
     @JoinColumn(name = "service_id")
+    @JsonBackReference
     private Service service;
 
     @Override

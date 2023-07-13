@@ -1,16 +1,20 @@
 package com.iyex.hotelmgt.domain.account;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.iyex.hotelmgt.domain.Booking;
 import com.iyex.hotelmgt.domain.Hotel;
 import com.iyex.hotelmgt.domain.Rating;
 import com.iyex.hotelmgt.domain.Review;
+import com.iyex.hotelmgt.token.Token;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -38,27 +42,42 @@ public class User implements UserDetails {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "role_id")
+    @JsonBackReference
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Token> tokens;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     @ToString.Exclude
+    @JsonManagedReference
     private Set<Booking> bookings;
 
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
+    @JsonManagedReference
     private Set<Rating> ratings;
 
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
+    @JsonManagedReference
     private Set<Review> reviews;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
+    @JsonBackReference
     private Hotel hotel;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getRoleName()));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Permission permission :
+                role.getPermissions()) {
+            authorities.add(new SimpleGrantedAuthority(permission.name()));
+        }
+        
+        return authorities;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.iyex.hotelmgt.domain.address;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class Address {
 
     @ManyToOne
     @JoinColumn(name = "district_id")
+    @JsonBackReference
     private District district;
 
 

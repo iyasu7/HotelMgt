@@ -1,5 +1,6 @@
 package com.iyex.hotelmgt.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class HotelType {
     private String description;
 
     @OneToMany(mappedBy = "type")
+    @JsonManagedReference
     private Set<Hotel> hotels;
 
 }

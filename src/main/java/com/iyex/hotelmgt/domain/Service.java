@@ -1,5 +1,7 @@
 package com.iyex.hotelmgt.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,12 +22,15 @@ public class Service {
 
     @ManyToOne
     @JoinColumn(name = "service_type")
+    @JsonBackReference
     private ServiceType serviceType;
 
     @OneToMany(mappedBy = "service")
+    @JsonManagedReference
     private Set<BookingService> bookingServices;
 
     @OneToMany(mappedBy = "service")
+    @JsonManagedReference
     private Set<HotelService> hotelServices;
 
 }

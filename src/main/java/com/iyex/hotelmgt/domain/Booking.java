@@ -1,5 +1,7 @@
 package com.iyex.hotelmgt.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.iyex.hotelmgt.domain.account.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,15 +29,18 @@ public class Booking {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @ToString.Exclude
+    @JsonBackReference
     private User user;
 
     @OneToMany(mappedBy = "booking")
     @ToString.Exclude
+    @JsonManagedReference
     private Set<BookingService> bookingServices;
 
     @OneToOne
     @JoinColumn(name = "room_id")
     @ToString.Exclude
+    @JsonBackReference
     private Room room;
 
 //    @ManyToOne

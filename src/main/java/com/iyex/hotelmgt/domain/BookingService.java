@@ -1,5 +1,6 @@
 package com.iyex.hotelmgt.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -19,10 +20,12 @@ public class BookingService {
 
     @ManyToOne
     @JoinColumn(name = "booking_id")
+    @JsonBackReference
     private Booking booking;
 
     @ManyToOne
     @JoinColumn(name = "service_id")
+    @JsonBackReference
     private Service service;
 
     @Override

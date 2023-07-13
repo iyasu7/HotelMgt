@@ -1,5 +1,7 @@
 package com.iyex.hotelmgt.domain.address;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +19,10 @@ public class Region {
 
     @ManyToOne
     @JoinColumn
+    @JsonBackReference
     private Country country;
 
     @OneToMany(mappedBy = "region")
+    @JsonManagedReference
     private Set<City> cities;
 }

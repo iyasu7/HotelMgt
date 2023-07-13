@@ -1,5 +1,6 @@
 package com.iyex.hotelmgt.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -21,6 +22,7 @@ public class RoomUnavailability {
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "room_id")
     @ToString.Exclude
+    @JsonBackReference
     private Room room;
 
     @NotNull
