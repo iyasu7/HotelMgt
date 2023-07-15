@@ -25,12 +25,17 @@ public class RoomUnavailability {
     @JsonBackReference
     private Room room;
 
+    @ManyToOne()
+    @JoinColumn(name = "booking_id")
+    @JsonBackReference
+    private Booking booking;
+
     @NotNull
     private LocalDateTime startTime;
     @NotNull
     private LocalDateTime endTime;
 
-    private boolean available;
+    private boolean unavailable;
 
     // ...
 }
