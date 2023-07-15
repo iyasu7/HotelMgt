@@ -7,8 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -25,18 +27,20 @@ public class RoomUnavailabilityService {
         return roomUnavailability;
     }
 
-    public RoomUnavailability makeRoomUnavailable(Room room, LocalDateTime startTime, LocalDateTime endTime){
+    public List<RoomUnavailability> makeRoomsUnavailable(Set<Room> rooms, LocalDateTime startTime, LocalDateTime endTime){
+        List<RoomUnavailability> roomUnavailabilityList = new ArrayList<>();
+        for (Room room : rooms) {
+            RoomUnavailability roomUnavailability = RoomUnavailability.builder()
+                    .room(room)
+                    .startTime(startTime)
+                    .endTime(endTime)
+                    .unavailable(true)
+                    .build();
 
-        RoomUnavailability roomUnavailability = RoomUnavailability.builder()
-                .room(room)
-                .startTime(startTime)
-                .endTime(endTime)
-                .available(false)
-                .build();
 
-        roomUnavailabilityRepo.save(roomUnavailability);
-
-        return roomUnavailability;
+        }
+            roomUnavailabilityRepo.saveAll(roomUnavailabilityList);
+        return roomUnavailabilityList;
     }
     public RoomUnavailability updateDates(Long roomUnavailabilityId, RoomUnavailability updateRoomUnavailability){
         RoomUnavailability roomUnavailability =  roomUnavailabilityRepo.findById(roomUnavailabilityId).orElseThrow(()-> new NoSuchElementException("Nothing booked with this date in this room before"));
@@ -58,7 +62,7 @@ public class RoomUnavailabilityService {
                 continue;
             }
 
-            if (startTime.isAfter(unavailabilityStartTime) || endTime.isBefore(unavailabilityEndTime) || !unavailability.isAvailable()) {
+            if (startTime.isAfter(unavailabilityStartTime) || endTime.isBefore(unavailabilityEndTime) || unavailability.isUnavailable()) {
                 return false;
             }
         }
@@ -69,5 +73,8 @@ public class RoomUnavailabilityService {
     public String deleteRoomUnavailability(Long roomUnavailabilityId) {
         roomUnavailabilityRepo.deleteById(roomUnavailabilityId);
         return "Room unavailability has been deleted";
+    }
+    public void deleteAllRoomUnavailability(Set<RoomUnavailability> roomUnavailabilitySet) {
+        roomUnavailabilityRepo.deleteAll(roomUnavailabilitySet);
     }
 }

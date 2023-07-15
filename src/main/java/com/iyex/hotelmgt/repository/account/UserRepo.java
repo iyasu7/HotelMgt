@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Set;
 
 public interface UserRepo extends JpaRepository<User, Long> {
-    User findUserByUsername(String username);
+    User findUserByUsernameIgnoreCase(String username);
+    Boolean existsByUsername(String username);
     Set<User> findUserByUserType(UserType userType);
     Set<User> findUserByHotel(Hotel hotel);
 }

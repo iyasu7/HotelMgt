@@ -26,7 +26,7 @@ public class UserService {
                 return userRepo.findById(id).orElseThrow(()-> new NoSuchElementException("User with id " + id + " not found"));
         }
         public User getUserByUsername(String username) {
-                return userRepo.findUserByUsername(username);
+                return userRepo.findUserByUsernameIgnoreCase(username);
             }
         public Set<User> getUsersByUserType(UserType userType){
                     return userRepo.findUserByUserType(userType);

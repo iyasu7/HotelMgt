@@ -37,21 +37,43 @@ public class Booking {
     @JsonManagedReference
     private Set<BookingService> bookingServices;
 
-    @OneToOne
-    @JoinColumn(name = "room_id")
+//    @OneToOne
+//    @JoinColumn(name = "room_id")
+//    @ToString.Exclude
+//    @JsonBackReference
+//    private Room room;
+
+    @OneToMany
+//    @JoinTable(name = "booking_roomUnavailability",
+//            joinColumns = @JoinColumn(name = "booking_id"),
+//            inverseJoinColumns = @JoinColumn(name = "roomUnavailability_id"))
     @ToString.Exclude
-    @JsonBackReference
-    private Room room;
+    @JsonManagedReference
+    private Set<RoomUnavailability> roomUnavailability;
 
-//    @ManyToOne
-//    private Hotel hotel;
+    @ManyToOne
+    @JoinColumn(name = "hote l_id",nullable = false)
+    private Hotel hotel;
 
-    private LocalDateTime bookingDate;
+    private LocalDateTime bookingDate = LocalDateTime.now();
     private LocalDateTime checkInDate;
     private LocalDateTime checkOutDate;
 
+    private boolean paid;
+
+    private boolean expired;
+
+    public void updateExpirationStatus(int bookingExpirationTime){
+        if (!paid && LocalDateTime.now().isAfter(bookingDate.plusHours(bookingExpirationTime))){
+            expired = true;
+        }
+    }
+
 //    paymentDetails;
-    // Update room availability when check-out is performed
+//     Update room availability when check-out is performed
+
+    // DON'T THINK THIS METHODS R NECESSARY
+
 //    public void performCheckOut(Room room) {
 //        if (room != null) {
 //            room.setUnavailabilities(true);
@@ -63,7 +85,8 @@ public class Booking {
 //        if (room != null) {
 //            LocalDateTime currentDate = LocalDateTime.now();
 //            boolean isWithinBookingPeriod = currentDate.isAfter(this.checkInDate) && currentDate.isBefore(this.checkOutDate);
-//            room.setAvailable(!isWithinBookingPeriod);
+//            room.setUnavailabilities();
+////            room.set(!isWithinBookingPeriod);
 //        }
 //    }
     @Override

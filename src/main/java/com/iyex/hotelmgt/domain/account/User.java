@@ -24,7 +24,7 @@ import java.util.Set;
 @ToString
 @Entity
 @Builder
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
 
@@ -36,6 +36,7 @@ public class User implements UserDetails {
     private String lastName;
     private String username;
     private String password;
+    private boolean enable;
 
     @Enumerated(value = EnumType.STRING)
     private UserType userType;
@@ -47,6 +48,7 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
+    @ToString.Exclude
     private List<Token> tokens;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
@@ -107,6 +109,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enable;
     }
+
 }

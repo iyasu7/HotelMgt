@@ -55,6 +55,9 @@ public class Hotel {
     private Set<HotelService> hotelServices;
 
     @OneToMany(mappedBy = "hotel")
+    private Set<Booking> bookings;
+
+    @OneToMany(mappedBy = "hotel")
     @JsonManagedReference
     private Set<Rating> ratings;
 

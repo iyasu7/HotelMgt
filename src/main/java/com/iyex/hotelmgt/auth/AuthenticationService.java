@@ -2,9 +2,13 @@ package com.iyex.hotelmgt.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iyex.hotelmgt.config.JwtService;
+import com.iyex.hotelmgt.domain.account.Confirmation;
 import com.iyex.hotelmgt.domain.account.User;
+import com.iyex.hotelmgt.domain.account.UserType;
+import com.iyex.hotelmgt.repository.account.ConfirmationRepo;
 import com.iyex.hotelmgt.repository.account.RoleRepo;
 import com.iyex.hotelmgt.repository.account.UserRepo;
+import com.iyex.hotelmgt.service.EmailService;
 import com.iyex.hotelmgt.token.Token;
 import com.iyex.hotelmgt.token.TokenRepo;
 import com.iyex.hotelmgt.token.TokenType;
@@ -29,6 +33,8 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final TokenRepo tokenRepo;
+    private final ConfirmationRepo confirmationRepo;
+    private final EmailService emailService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         User user = User.builder()
@@ -37,9 +43,20 @@ public class AuthenticationService {
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(roleRepo.findByRoleName("guest"))
+                .userType(UserType.GUEST)
                 .build();
 
+        user.setEnable(false);
+
         userRepo.save(user);
+
+        Confirmation confirmation = new Confirmation(user);
+        confirmationRepo.save(confirmation);
+
+        emailService.sendTextMailMessage(user.getFirstName()+" "+user.getLastName(),user.getUsername(),confirmation.getConfirmationLink());
+        //Email
+
+
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveToken(user, jwtToken);
@@ -71,7 +88,7 @@ public class AuthenticationService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),request.getPassword()));
-        var user = userRepo.findUserByUsername(request.getUsername());
+        var user = userRepo.findUserByUsernameIgnoreCase(request.getUsername());
         if (user == null) {
             throw new NoSuchElementException("user with username: "+request.getUsername()+" NOT found!!");
         }
@@ -118,7 +135,7 @@ public class AuthenticationService {
         refreshToken = authHeader.substring(7);
         username = jwtService.extractUsername(refreshToken);
         if (username != null) {
-            var userDetails = userRepo.findUserByUsername(username);
+            var userDetails = userRepo.findUserByUsernameIgnoreCase(username);
             if (userDetails == null) {
                 throw new NoSuchElementException("user not found");
             }
@@ -136,4 +153,17 @@ public class AuthenticationService {
         }
 
     }
+        public Boolean verifyLink(String confirmLink){
+            Confirmation confirmation = confirmationRepo.findByConfirmationLink(confirmLink);
+            if (confirmation == null) {
+                throw new NoSuchElementException("NO confirmation with this confirmation Link");
+            }
+            User user = userRepo.findUserByUsernameIgnoreCase(confirmation.getUser().getUsername());
+            if (user == null) {
+                throw new NoSuchElementException("User with this confirmation NOT FOUND ");
+            }
+            user.setEnable(true);
+            userRepo.save(user);
+            return true;
+        }
 }

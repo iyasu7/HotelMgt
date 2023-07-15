@@ -28,9 +28,9 @@ public class Room {
     @JsonBackReference
     private RoomType roomType;
 
-    @OneToOne(mappedBy = "room")
-    @JsonBackReference
-    private Booking booking;
+//    @ManyToOne()
+//    @JsonBackReference
+//    private Booking booking;
 
     @OneToMany(mappedBy = "room")
     @ToString.Exclude
