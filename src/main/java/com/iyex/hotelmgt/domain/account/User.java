@@ -36,6 +36,7 @@ public class User implements UserDetails {
     private String lastName;
     private String username;
     private String password;
+    @Column(nullable = true)
     private boolean enable;
 
     @Enumerated(value = EnumType.STRING)

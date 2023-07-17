@@ -37,6 +37,13 @@ public class AuthenticationService {
     private final EmailService emailService;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        String username = request.getUsername();
+
+        // Check if the username already exists
+        if (userRepo.findUserByUsernameIgnoreCase(username)!=null) {
+//            throw new UsernameAlreadyExistsException("Username already exists");
+            throw new NoSuchElementException("Username already exists");
+        }
         User user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -53,8 +60,12 @@ public class AuthenticationService {
         Confirmation confirmation = new Confirmation(user);
         confirmationRepo.save(confirmation);
 
-        emailService.sendTextMailMessage(user.getFirstName()+" "+user.getLastName(),user.getUsername(),confirmation.getConfirmationLink());
         //Email
+//        emailService.sendTextMailMessage(user.getFirstName()+" "+user.getLastName(),user.getUsername(),confirmation.getConfirmationLink());
+//        emailService.sendMimeMessageWithAttachment(user.getFirstName()+" "+user.getLastName(),user.getUsername(),confirmation.getConfirmationLink());
+//        emailService.sendMimeMessageWithEmbeddedFiles(user.getFirstName()+" "+user.getLastName(),user.getUsername(),confirmation.getConfirmationLink());
+//        emailService.sendHtmlEmail(user.getFirstName()+" "+user.getLastName(),user.getUsername(),confirmation.getConfirmationLink());
+        emailService.sendHtmlEmailWithEmbeddedFiles(user.getFirstName()+" "+user.getLastName(),user.getUsername(),confirmation.getConfirmationLink());
 
 
         var jwtToken = jwtService.generateToken(user);

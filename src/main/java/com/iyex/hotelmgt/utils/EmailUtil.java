@@ -5,7 +5,7 @@ public class EmailUtil {
         return "Hello "+name+"\n\nYour new account has been created. Please click the link below to verify your account\n\n"+gerVerificationUrl(host,confirmLink)+"\n\nIyasu Yonas";
     }
 
-    private static String gerVerificationUrl(String host, String confirmLink) {
+    public static String gerVerificationUrl(String host, String confirmLink) {
         return host +"/api/auth?confirmLink="+confirmLink;
     }
 }
