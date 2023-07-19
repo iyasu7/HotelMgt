@@ -27,9 +27,11 @@ public class Hotel {
     private String hotelName;
 
     private String description;
+    private String phoneNumber;
+    private String hotelEmail;
 
     private int star;
-    private int bookingExpirationTimeInHours;
+    private int reservationTimeForBookingToExpire;
 
     @ManyToOne
     @JoinColumn(name = "hotel_type")
@@ -43,7 +45,7 @@ public class Hotel {
 
     @OneToMany(mappedBy = "hotel")
     @JsonManagedReference
-    private List<Room> rooms;
+    private List<RoomType> roomTypes;
 
     @OneToMany(mappedBy = "hotel")
     @JsonManagedReference

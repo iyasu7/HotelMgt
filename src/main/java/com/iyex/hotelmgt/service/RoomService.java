@@ -15,7 +15,9 @@ public class RoomService {
     private final RoomRepo roomRepo;
 
     public Room getRoom(Long id){
-        return roomRepo.findById(id).orElseThrow(()->new NoSuchElementException("Room with id " + id + " was not found"));
+        Room room = roomRepo.findById(id).orElseThrow(()->new NoSuchElementException("Room with id " + id + " was not found"));
+//        String roomsize = room.getRoomSize().name();
+        return room;
     }
     public List<Room> getAllRooms(){
         return roomRepo.findAll();

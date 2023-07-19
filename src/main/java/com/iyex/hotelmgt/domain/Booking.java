@@ -7,7 +7,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -52,7 +54,7 @@ public class Booking {
     private Set<RoomUnavailability> roomUnavailability;
 
     @ManyToOne
-    @JoinColumn(name = "hote l_id",nullable = false)
+    @JoinColumn(name = "hotel_id",nullable = false)
     private Hotel hotel;
 
     private LocalDateTime bookingDate = LocalDateTime.now();
@@ -64,9 +66,31 @@ public class Booking {
     private boolean expired;
 
     public void updateExpirationStatus(int bookingExpirationTime){
-        if (!paid && LocalDateTime.now().isAfter(bookingDate.plusHours(bookingExpirationTime))){
-            expired = true;
+        if (!this.paid && LocalDateTime.now().isAfter(this.bookingDate.plusHours(bookingExpirationTime))){
+            this.expired = true;
         }
+    }
+    public boolean lessThanthreeHoursLeftEmailNotification(int bookingExpirationTime){
+        return !this.paid && LocalDateTime.now().isAfter(this.bookingDate.plusHours(bookingExpirationTime).minusHours(3));
+    }
+    public BigDecimal getTotalAmount() {
+        BigDecimal totalAmount = BigDecimal.ZERO;
+
+        // Calculate room prices
+        for (RoomUnavailability roomUnavailability1 : roomUnavailability) {
+            BigDecimal roomPricePerNight = BigDecimal.valueOf(roomUnavailability1.getRoom().getPricePerNight());
+            int numberOfNights = (int) ChronoUnit.DAYS.between(checkInDate.toLocalDate(), checkOutDate.toLocalDate());
+            BigDecimal roomTotalPrice = roomPricePerNight.multiply(BigDecimal.valueOf(numberOfNights));
+            totalAmount = totalAmount.add(roomTotalPrice);
+        }
+
+        // Calculate service prices
+        for (BookingService bookingService : bookingServices) {
+            BigDecimal servicePrice = BigDecimal.valueOf(bookingService.getService().getPrice());
+            totalAmount = totalAmount.add(servicePrice);
+        }
+
+        return totalAmount;
     }
 
 //    paymentDetails;

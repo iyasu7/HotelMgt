@@ -21,6 +21,7 @@ public class Confirmation {
     private Long id;
 
     private String confirmationLink;
+
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private LocalDateTime createdDate;

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Invoice</title>
+</head>
+<body>
+<div style="box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5); padding: 2mm; margin: 0 auto; background: #FFF;">
+  <center id="top">
+    <div class="logo" style="height: 60px; width: 60px; background: url(http://michaeltruong.ca/images/logo1.png) no-repeat; background-size: 60px 60px;"></div>
+    <div class="info">
+      <h2>Nuro Hotel Portal</h2>
+    </div><!--End Info-->
+  </center><!--End InvoiceTop-->
+
+  <div id="mid" style="min-height: 80px;">
+    <div class="info">
+      <h3>Contact Info</h3>
+      <p>
+        <strong><span th:text="${booking.getHotel().getHotelName().toUpperCase()}"></span></strong>
+        Address : <span th:text="${booking.getHotel().getDistrict().getDistrictName()}"></span><br>
+        Email   : <span th:text="${booking.getHotel().getHotelEmail()}"></span><br>
+        Phone   : <span th:text="${booking.getHotel().getPhoneNumber()}"></span><br>
+      </p>
+    </div>
+  </div><!--End Invoice Mid-->
+
+  <div id="bot" style="min-height: 50px;">
+
+    <div id="table">
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr style="padding: 5px; font-size: 0.5em; background: #EEE;">
+          <th style="width: 24mm;"><h2></h2></th>
+          <th style="font-size: 0.5em;"><h2>Duration (in Days)</h2></th>
+          <th style="font-size: 0.5em;"><h2>Sub Total</h2></th>
+        </tr>
+
+        <!-- Add dynamic rows for items here -->
+        <!-- For example, you can use Thymeleaf iteration to loop through booking items -->
+        <tr style="border-bottom: 1px solid #EEE;" th:each="roomUnavailability : ${booking.getRoomUnavailability()}">
+          <td style="padding: 5px; font-size: 0.5em;">
+            <p style="font-size: 0.5em;" th:text="${roomUnavailability.getRoom().getRoomType().getRoomTypeName()}"></p>
+          </td>
+          <td style="padding: 5px; font-size: 0.5em;">
+            <p style="font-size: 0.5em;" th:text="${T(java.time.temporal.ChronoUnit).DAYS.between(booking.checkInDate.toLocalDate(), booking.checkOutDate.toLocalDate())}"></p>
+          </td>
+          <td style="padding: 5px; font-size: 0.5em;">
+            <p style="font-size: 0.5em;" th:text="${roomUnavailability.room.pricePerNight * T(java.time.temporal.ChronoUnit).DAYS.between(booking.checkInDate.toLocalDate(), booking.checkOutDate.toLocalDate())}"></p>
+          </td>
+        </tr>
+        <tr style="border-bottom: 1px solid #EEE;" th:each="bookingService : ${booking.getBookingServices()}">
+          <td style="padding: 5px; font-size: 0.5em;">
+            <p style="font-size: 0.5em;" th:text="${bookingService.service.serviceName}"></p>
+          </td>
+          <td style="padding: 5px; font-size: 0.5em;">
+<!--            <p style="font-size: 0.5em;" th:text="${bookingService.service.}"></p>-->
+          </td>
+          <td style="padding: 5px; font-size: 0.5em;">
+            <p style="font-size: 0.5em;" th:text="${bookingService.service.price}"></p>
+          </td>
+        </tr>
+
+        <tr style="padding: 5px; font-size: 0.5em; background: #EEE;">
+          <td></td>
+          <td style="font-size: 0.5em;"><h2></h2></td>
+          <td style="font-size: 0.5em;">
+            <h2 th:text="${#numbers.formatDecimal(booking.totalAmount, 0, 'POINT', 2, 'COMMA')}"></h2>
+          </td>
+        </tr>
+        <tr style="padding: 5px; font-size: 0.5em; background: #EEE;">
+          <td></td>
+          <td style="font-size: 0.5em;"><h2>Tax (15%)</h2></td>
+          <td style="font-size: 0.5em;">
+            <h2 th:text="${#numbers.formatDecimal(booking.totalAmount*0.15, 0, 'POINT', 2, 'COMMA')}"></h2>
+          </td>
+        </tr>
+
+        <tr style="padding: 5px; font-size: 0.5em; background: #EEE;">
+          <td></td>
+          <td style="font-size: 0.5em;"><h2>Total</h2></td>
+          <td style="font-size: 0.5em;">
+            <h2 th:text="${#numbers.formatDecimal(booking.totalAmount*1.15, 0, 'POINT', 2, 'COMMA')}"></h2>
+          </td>
+        </tr>
+      </table>
+    </div><!--End Table-->
+
+    <div style="margin-top: 5mm;">
+      <div >
+        <strong style="display: flex; justify-content: center;">Thank you for choosing Us!</strong>
+        <p style="display: flex; justify-content: center;">Payment is expected within <strong><span th:time="${booking.getHotel().getReservationTimeForBookingToExpire()}" > </span> hours</strong>.</p>
+      <p style="align-content: center">please process this invoice within that time.</p>
+      </div>
+    </div>
+  </div><!--End InvoiceBot-->
+</div><!--End Invoice-->
+</body>
+</html>

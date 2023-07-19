@@ -17,8 +17,9 @@ public class BookingService {
 
     private final BookingRepo bookingRepo;
     private final RoomUnavailabilityService roomUnavailabilityService;
+    private final EmailService emailService;
 
-    public Booking getBooking(Long id){
+    public Booking getBookingById(Long id){
         return bookingRepo.findById(id)
                 .orElseThrow(()-> new NoSuchElementException("Booking with id " + id + " not found"));
     }
@@ -40,12 +41,15 @@ public class BookingService {
         roomUnavailabilityService.makeRoomsUnavailable(rooms,booking.getCheckInDate(),booking.getCheckOutDate());
         booking.setBookingNumber(UUID.randomUUID());
         booking.setBookingDate(LocalDateTime.now());
-        return bookingRepo.save(booking);
+        // Send the receipt email for the first-time booking
+        Booking savedBooking = bookingRepo.save(booking);
+        emailService.sendReceiptByEmail(savedBooking);
+        return savedBooking;
     }
     //update booking
 
     public String deleteBooking(Long id){
-        Booking booking = getBooking(id);
+        Booking booking = getBookingById(id);
         Set<Room> rooms = booking.getRoomUnavailability()
                 .stream()
                 .map(RoomUnavailability::getRoom)

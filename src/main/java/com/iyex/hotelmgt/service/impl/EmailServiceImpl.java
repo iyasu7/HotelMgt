@@ -1,5 +1,6 @@
 package com.iyex.hotelmgt.service.impl;
 
+import com.iyex.hotelmgt.domain.Booking;
 import com.iyex.hotelmgt.service.EmailService;
 import jakarta.activation.DataHandler;
 import jakarta.mail.BodyPart;
@@ -23,8 +24,7 @@ import org.thymeleaf.context.Context;
 import java.io.File;
 import java.util.Map;
 
-import static com.iyex.hotelmgt.utils.EmailUtil.gerVerificationUrl;
-import static com.iyex.hotelmgt.utils.EmailUtil.getUserCreatedEmailMessage;
+import static com.iyex.hotelmgt.utils.EmailUtil.*;
 import static java.util.Objects.requireNonNull;
 
 @Service
@@ -32,7 +32,7 @@ import static java.util.Objects.requireNonNull;
 public class EmailServiceImpl implements EmailService {
     public static final String NEW_USER_ACCOUNT_VERIFICATION = "New User Account verification";
     public static final String UTF_8_ENCODING = "UTF-8";
-    public static final String TEXT_HTML_Encoding = "Text/html";
+    public static final String TEXT_HTML_ENCODING = "Text/html";
 
     @Value("${spring.mail.verify.host}")
     private String host;
@@ -57,13 +57,28 @@ public class EmailServiceImpl implements EmailService {
             throw new RuntimeException(exc.getMessage());
         }
     }
+    @Override
+    @Async
+    public void sendLessThanThreeHoursLeftNotification(Booking booking) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setSubject("Less than three Hours lefts for Booking to Expire");
+            message.setFrom(fromEmail);
+            message.setTo(booking.getUser().getUsername());
+            message.setText(getLessThanThreeHoursEmailMessage(booking));
+            mailSender.send(message);
+        } catch (Exception exc) {
+            throw new RuntimeException(exc.getMessage());
+        }
+    }
+
 
     @Override
     @Async
     public void sendMimeMessageWithAttachment(String name, String to, String confirmLink) {
         try {
 
-            EmailMessageStarter emailStarter = getEmailMessageStarter(name, to, confirmLink);
+            EmailMessageStarter emailStarter = getEmailMessageStarter(NEW_USER_ACCOUNT_VERIFICATION,to);
             emailStarter.messageHelper().setText(getUserCreatedEmailMessage(name, host, confirmLink));
 
             //attachments
@@ -82,7 +97,7 @@ public class EmailServiceImpl implements EmailService {
     @Async
     public void sendMimeMessageWithEmbeddedFiles(String name, String to, String confirmLink) {
         try {
-            EmailMessageStarter emailStarter = getEmailMessageStarter(name, to, confirmLink);
+            EmailMessageStarter emailStarter = getEmailMessageStarter(NEW_USER_ACCOUNT_VERIFICATION,to);
             emailStarter.messageHelper().setText(getUserCreatedEmailMessage(name, host, confirmLink));
             //attachments
 //            FileSystemResource photo = new FileSystemResource(new File(System.getProperty("user.home") + "/OneDrive/Pictures/DV/C.jpg"));
@@ -101,11 +116,11 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    private EmailMessageStarter getEmailMessageStarter(String name, String to, String confirmLink) throws MessagingException {
+    private EmailMessageStarter getEmailMessageStarter(String subject, String to) throws MessagingException {
         MimeMessage message = getMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, UTF_8_ENCODING);
         messageHelper.setPriority(1);
-        messageHelper.setSubject(NEW_USER_ACCOUNT_VERIFICATION);
+        messageHelper.setSubject(subject);
         messageHelper.setFrom(fromEmail);
         messageHelper.setTo(to);
 //        messageHelper.setText(getUserCreatedEmailMessage(name, host, confirmLink));
@@ -123,7 +138,7 @@ public class EmailServiceImpl implements EmailService {
             context.setVariables(Map.of("name",name,"confirmLink",gerVerificationUrl(host,confirmLink)));
             String text = templateEngine.process("signupemailtemplate",context);
 
-            EmailMessageStarter emailStarter = getEmailMessageStarter(name, to, confirmLink);
+            EmailMessageStarter emailStarter = getEmailMessageStarter(NEW_USER_ACCOUNT_VERIFICATION,to);
             emailStarter.messageHelper().setText(text,true);
 
 
@@ -133,13 +148,29 @@ public class EmailServiceImpl implements EmailService {
             throw new RuntimeException(exc.getMessage());
         }
     }
+    @Override
+    @Async
+    public void sendReceiptByEmail(Booking booking) {
+        try {
+            Context context = new Context();
+            context.setVariable("booking",booking);
+            String text = templateEngine.process("BookingReceipt",context);
+
+            EmailMessageStarter emailStarter = getEmailMessageStarter("Booking Receipt at "+booking.getHotel().getHotelName().toUpperCase(),booking.getUser().getUsername());
+            emailStarter.messageHelper().setText(text,true);
+
+            mailSender.send(emailStarter.message());
+
+        } catch (Exception exc) {
+            throw new RuntimeException(exc.getMessage());
+        }
+    }
 
     @Override
     @Async
     public void sendHtmlEmailWithEmbeddedFiles(String name, String to, String confirmLink) {
         try {
-
-            EmailMessageStarter emailStarter = getEmailMessageStarter(name, to, confirmLink);
+            EmailMessageStarter emailStarter = getEmailMessageStarter(NEW_USER_ACCOUNT_VERIFICATION, to);
 
             // Process the Thymeleaf template
             Context context = new Context();
@@ -151,26 +182,15 @@ public class EmailServiceImpl implements EmailService {
 
             // Add the HTML body part
             BodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setContent(text, TEXT_HTML_Encoding);
+            messageBodyPart.setContent(text, TEXT_HTML_ENCODING);
             mimeMultipart.addBodyPart(messageBodyPart);
 
             // Add the logo image as an embedded file
             BodyPart logoBodyPart = new MimeBodyPart();
-//            DataSource logoDataSource = new FileDataSource(System.getProperty("user.home") + "/OneDrive/Documents/@projects/HotelMgt/src/main/resources/logo/zuro-seethrough.png");
-//            logoBodyPart.setDataHandler(new DataHandler(logoDataSource));
-            ClassPathResource logoResource = new ClassPathResource("logo/zuro-seethrough.png");
-            logoBodyPart.setDataHandler(new DataHandler(new ByteArrayDataSource(logoResource.getInputStream(), "image/png")));
+            ClassPathResource logoResource = new ClassPathResource("logo/zuro_logo.ico");
+            logoBodyPart.setDataHandler(new DataHandler(new ByteArrayDataSource(logoResource.getInputStream(), "image/x-icon"))); // Use the correct Content-Type for .ico files
             logoBodyPart.setHeader("Content-ID", "<zurologo>");
             mimeMultipart.addBodyPart(logoBodyPart);
-
-            // Add the other image as an embedded file
-//            BodyPart imgBodyPart = new MimeBodyPart();
-////            DataSource imgDataSource = new FileDataSource(System.getProperty("user.home") + "/OneDrive/Pictures/zuro.png");
-////            imgBodyPart.setDataHandler(new DataHandler(imgDataSource));
-////            ClassPathResource imgResource = new ClassPathResource("zuro.png");
-////            imgBodyPart.setDataHandler(new DataHandler(new ByteArrayDataSource(imgResource.getInputStream(), "image/png")));
-//            imgBodyPart.setHeader("Content-ID", "<zuroimg>");
-//            mimeMultipart.addBodyPart(imgBodyPart);
 
             // Set the MimeMultipart as the message content
             emailStarter.message().setContent(mimeMultipart);
