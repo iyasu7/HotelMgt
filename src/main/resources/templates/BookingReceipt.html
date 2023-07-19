@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Booking Receipt</title>
+</head>
+<body>
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
+  <h1 style="text-align: center;">Booking Receipt</h1>
+  <p>Booking ID: <span th:text="${booking.id}" style="margin-left: 10px; font-weight: bold;"></span></p>
+  <p>Customer Name: <span th:text="${booking.user.firstName} + ' ' + ${booking.user.lastName}" style="margin-left: 10px; font-weight: bold;"></span></p>
+  <p>Email: <span th:text="${booking.user.username}" style="margin-left: 10px; font-weight: bold;"></span></p>
+  <div style="margin-top: 20px;">
+    <div style="display: flex; justify-content: space-between;">
+      <span style="font-weight: bold;">Check-In Date:</span>
+      <span th:text="${booking.checkInDate}" style="margin-left: 10px;"></span>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+      <span style="font-weight: bold;">Check-Out Date:</span>
+      <span th:text="${booking.checkOutDate}" style="margin-left: 10px;"></span>
+    </div>
+    <div style="margin-top: 20px;">
+      <h3>Room Details</h3>
+      <table style="width: 100%;">
+        <tr>
+          <th>Room Type</th>
+          <th>Price per Night</th>
+          <th>No. of Nights</th>
+          <th>Total Price</th>
+        </tr>
+        <tr th:each="roomUnavailability : ${booking.roomUnavailability}">
+          <td th:text="${roomUnavailability.room.roomType.roomTypeName}"></td>
+          <td th:text="${roomUnavailability.room.pricePerNight}"></td>
+          <td th:text="${T(java.time.temporal.ChronoUnit).DAYS.between(booking.checkInDate.toLocalDate(), booking.checkOutDate.toLocalDate())}"></td>
+          <td th:text="${roomUnavailability.room.pricePerNight * T(java.time.temporal.ChronoUnit).DAYS.between(booking.checkInDate.toLocalDate(), booking.checkOutDate.toLocalDate())}"></td>
+        </tr>
+      </table>
+    </div>
+    <div style="margin-top: 20px;">
+      <h3>Services Details</h3>
+      <table style="width: 100%;">
+        <tr>
+          <th>Service</th>
+          <th>Price</th>
+        </tr>
+        <tr th:each="bookingService : ${booking.bookingServices}">
+          <td th:text="${bookingService.service.serviceName}"></td>
+          <td th:text="${bookingService.service.price}"></td>
+        </tr>
+      </table>
+    </div>
+    <br/>
+    <hr/>
+    <div style="display: flex; justify-content: space-between;">
+      <p th:text="${booking.getTotalAmount()}" style="margin-left: 10px;align-content: end; font-weight: bold;"></p>
+      <p style="align-content: end;align-items: flex-end" ><span style="font-weight: bold;">Tax(15%):</span>
+      <span th:text="${booking.getTotalAmount()* 0.15}" style="margin-left: 10px; font-weight: bold;"></span></p><br>
+      <p style="align-content: end;"><span style="font-weight: bold;">Total Amount:</span>
+      <span th:text="${booking.getTotalAmount()*1.15}" style="margin-left: 10px;align-content: end; font-weight: bold;"></span></p>
+    </div>
+    <!-- more booking details  -->
+  </div>
+</div>
+
+</body>
+</html>
